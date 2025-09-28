@@ -1,0 +1,48 @@
+# PromptDresser LoRA Fine-tune (pattern-only, VRAM-optimized)
+
+model:
+  target: models.promptdresser.PromptDresserModel
+  params:
+    base_model_path: "./checkpoints/VITONHD/model/pytorch_model.bin"
+    # cloth_encoder_path: ""                 # kullanmayacaksan boş bırak
+    detach_cloth_encoder: true              # VRAM kazanımı (cloth encoder kapalı)
+
+lora:
+  enabled: true
+  rank: 16
+  alpha: 32
+  dropout: 0.1
+  target_modules:
+    - "mid_block\\.attentions\\.\\d+\\.transformer_blocks\\.\\d+\\.attn\\d\\.to_(q|k|v|out\\.0)$"
+    - "up_blocks\\.(2|3)\\.attentions\\.\\d+\\.transformer_blocks\\.\\d+\\.attn\\d\\.to_(q|k|v|out\\.0)$"
+    # daha agresif istersen (VRAM artar):
+    # - "down_blocks\\.\\d+\\.attentions\\.\\d+\\.transformer_blocks\\.\\d+\\.attn\\d\\.to_(q|k|v|out\\.0)$"
+
+training:
+  learning_rate: 5e-5
+  batch_size: 1
+  max_epochs: 3
+  gradient_accumulation_steps: 8
+  save_steps: 100
+  logging_steps: 10
+  warmup_steps: 0
+  max_grad_norm: 0.5
+  mixed_precision: "bf16"   # komutta da bf16 kullanıyorsun
+
+data:
+  train_data_dir: "./DATA/zalando-hd-resized"
+  image_size: 384
+  max_train_samples: 100
+
+logging:
+  wandb:
+    enabled: false
+  tensorboard:
+    enabled: true
+    log_dir: "./logs/pattern_lora"
+
+dataset:
+  # not: bizim minimal dataset bu alanı okumasa da referans olması için burada tutuyoruz
+  data_root_dir: "./DATA/zalando-hd-resized"
+  pairs_file: "test_pairs.txt"          # senin seçtiğin desenli çiftler
+  text_file_postfix: "test_gpt4o.json"  # prompt JSON dosyası (aynı klasörde)
