@@ -437,8 +437,8 @@ def get_matching_gt_files(pred_ps, gt_dir):
                 gt_found = True
                 break
         if not gt_found:
-            print(f"⚠️  No GT found for: {pred_filename}")
-    print(f"✅ Matched {len(matched_pred_ps)} pred files with GT files")
+            print(f" No GT found for: {pred_filename}")
+    print(f" Matched {len(matched_pred_ps)} pred files with GT files")
     return matched_pred_ps, matched_gt_ps
 
 @torch.no_grad()
@@ -449,7 +449,7 @@ def get_comprehensive_metrics(pred_dir, gt_dir, img_h, img_w, is_unpaired, evalu
         matched_pred_ps, gt_ps = get_matching_gt_files(pred_ps, gt_dir)
         pred_ps = matched_pred_ps
         if len(pred_ps) == 0:
-            print("❌ No matching GT files found!")
+            print("No matching GT files found!")
             return {}, {}
         print(f"Using {len(pred_ps)} matched pairs for evaluation")
     else:
@@ -551,7 +551,7 @@ def get_comprehensive_metrics(pred_dir, gt_dir, img_h, img_w, is_unpaired, evalu
         fid_score = fid.compute_fid(pred_dir, gt_dir, mode="clean", use_dataparallel=False, dataset_split="custom")
         kid_score = fid.compute_kid(pred_dir, gt_dir, mode="clean", use_dataparallel=False, dataset_split="custom")
     except Exception as e:
-        print(f"⚠️  FID/KID calculation failed: {e}")
+        print(f"FID/KID calculation failed: {e}")
         fid_score = 0.0
         kid_score = 0.0
     fid_end = time.time()
@@ -684,7 +684,7 @@ def save_comprehensive_results(avg_metrics, enhanced_results, save_dir, pair_typ
             print(f"Total GT files: {file_info['total_gt_files']}")
             print(f"Successfully matched pairs: {file_info['matched_pairs']}")
             if file_info['matched_pairs'] < file_info['total_pred_files']:
-                print(f"⚠️  {file_info['total_pred_files'] - file_info['matched_pairs']} files could not be matched")
+                print(f"{file_info['total_pred_files'] - file_info['matched_pairs']} files could not be matched")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Comprehensive PromptDresser Evaluation (GPU-aware)")
@@ -750,4 +750,4 @@ if __name__ == "__main__":
             f.write(f"kid_score : {avg_metrics.get('kid_score', 0.0)}")
         print(f"Results saved to: {save_path}")
     
-    print(f"\n✅ Evaluation completed successfully!")
+    print(f"\nEvaluation completed successfully!")

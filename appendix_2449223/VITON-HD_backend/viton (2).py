@@ -366,7 +366,7 @@ def image_to_base64(image_path: str) -> Optional[str]:
 @app.get("/")
 def root():
     return {
-        "status": "✅ VITON-HD API is running", 
+        "status": "VITON-HD API is running", 
         "model": "VITON-HD",
         "version": "1.0.0",
         "features": ["try-on", "quality-metrics", "real-time-processing", "real-lpips"]
@@ -387,7 +387,7 @@ async def tryon(
         person_filename = person_image.filename
         cloth_filename = cloth_image.filename
         
-        print(f"🚀 VITON-HD Processing: {person_filename} + {cloth_filename}")
+        print(f"VITON-HD Processing: {person_filename} + {cloth_filename}")
 
         # kaydet
         person_path = f"{DATASET_DIR}/test/image/{person_filename}"
@@ -453,8 +453,8 @@ async def tryon(
         metrics = calculate_complete_viton_metrics(person_path, result_file, inference_time)
         total_time = time.time() - start_time
         
-        print(f"✅ VITON-HD completed in {total_time:.1f}s")
-        print(f"📊 Quality metrics: {metrics}")
+        print(f"VITON-HD completed in {total_time:.1f}s")
+        print(f"Quality metrics: {metrics}")
 
         # JSON serializable hale getir
         import json
@@ -571,9 +571,9 @@ async def tryon_with_details(
         total_time = time.time() - start_time
         
         return {
-            "status": "✅ VITON-HD completed successfully!",
+            "status": "VITON-HD completed successfully!",
             "model": "VITON-HD",
-            "message": "🎉 High-resolution virtual try-on complete!",
+            "message": "High-resolution virtual try-on complete!",
             
             # File info
             "files": {
@@ -651,7 +651,7 @@ def list_results():
             "results": files_with_info,
             "count": len(files_with_info),
             "model": "VITON-HD",
-            "message": "📸 VITON-HD results (newest first)"
+            "message": "VITON-HD results (newest first)"
         }
         
     except Exception as e:
@@ -680,7 +680,7 @@ async def run_custom_test_20(
         if custom_pairs_file:
             pairs_content = await custom_pairs_file.read()
             test_pairs = pairs_content.decode().strip().split('\n')
-            print(f"📄 Using custom pairs file with {len(test_pairs)} pairs")
+            print(f"Using custom pairs file with {len(test_pairs)} pairs")
         else:
             # Default test_pairs.txt'den oku
             if not os.path.exists(test_pairs_path):
@@ -691,7 +691,7 @@ async def run_custom_test_20(
             
             with open(test_pairs_path, 'r') as f:
                 test_pairs = [line.strip() for line in f.readlines() if line.strip()]
-            print(f"📄 Using existing test_pairs.txt with {len(test_pairs)} pairs")
+            print(f"Using existing test_pairs.txt with {len(test_pairs)} pairs")
         
         # İlk 20 pair'i al
         test_pairs = test_pairs[:20]
@@ -717,7 +717,7 @@ async def run_custom_test_20(
             "gpu_utilization_percent": []
         }
         
-        print(f"🚀 Starting VITON-HD test with {len(test_pairs)} samples...")
+        print(f"Starting VITON-HD test with {len(test_pairs)} samples...")
         
         for idx, pair in enumerate(test_pairs):
             person_img, cloth_img = pair.split()
@@ -727,7 +727,7 @@ async def run_custom_test_20(
             cloth_path = f"{DATASET_DIR}/test/cloth/{cloth_img}"
             
             if not os.path.exists(person_path) or not os.path.exists(cloth_path):
-                print(f"⚠️ Skipping pair {idx+1}: Files not found")
+                print(f"Skipping pair {idx+1}: Files not found")
                 continue
             
             # Her seferinde tek pair yaz
@@ -735,7 +735,7 @@ async def run_custom_test_20(
                 f.write(f"{person_img} {cloth_img}\n")
             
             # Inference
-            print(f"⚡ Processing pair {idx+1}/{len(test_pairs)}: {person_img} + {cloth_img}")
+            print(f" Processing pair {idx+1}/{len(test_pairs)}: {person_img} + {cloth_img}")
             inference_start = time.time()
             
             try:
@@ -781,10 +781,10 @@ async def run_custom_test_20(
                         "file_size_mb": metrics["output_metrics"]["file_size_mb"]
                     })
                     
-                    print(f"✅ {idx+1}/{len(test_pairs)} completed - SSIM: {metrics['visual_quality']['ssim']:.3f}, LPIPS: {metrics['visual_quality']['lpips']:.3f} (REAL)")
+                    print(f"{idx+1}/{len(test_pairs)} completed - SSIM: {metrics['visual_quality']['ssim']:.3f}, LPIPS: {metrics['visual_quality']['lpips']:.3f} (REAL)")
                     
             except subprocess.CalledProcessError as e:
-                print(f"❌ Failed pair {idx+1}: {e}")
+                print(f"Failed pair {idx+1}: {e}")
                 continue
         
         # Ortalamalar
@@ -842,7 +842,7 @@ async def run_custom_test_20(
             quality_grade = "Excellent" if avg_ssim > 0.88 else "Good" if avg_ssim > 0.83 else "Fair" if avg_ssim > 0.78 else "Poor"
             
             return {
-                "status": "✅ Test completed with REAL LPIPS!",
+                "status": "Test completed with REAL LPIPS!",
                 "model": "VITON-HD",
                 "model_type": "GAN-based",
                 "num_samples": len(test_pairs),
@@ -894,20 +894,20 @@ async def run_custom_test_20(
         if original_content is not None:
             with open(test_pairs_path, 'w') as f:
                 f.write(original_content)
-            print("✅ Original test_pairs.txt restored")
+            print("Original test_pairs.txt restored")
         elif os.path.exists(test_pairs_backup):
             shutil.copy(test_pairs_backup, test_pairs_path)
-            print("✅ Original test_pairs.txt restored from backup")
+            print("Original test_pairs.txt restored from backup")
 
 if __name__ == "__main__":
     public_url = ngrok.connect(8002)
-    print(f"✅ VITON-HD Ngrok public URL: {public_url}")
-    print(f"📖 Docs: {public_url}/docs")
-    print(f"🤖 Model: VITON-HD with REAL LPIPS Metrics")
-    print(f"📁 Dataset: {DATASET_DIR}")
-    print(f"📊 Results: {RESULT_DIR}")
-    print(f"✨ Real Metrics: SSIM, LPIPS, PSNR")
-    print(f"📊 Performance Metrics: Memory, GPU, Inference Time")
+    print(f"VITON-HD Ngrok public URL: {public_url}")
+    print(f"Docs: {public_url}/docs")
+    print(f"Model: VITON-HD with REAL LPIPS Metrics")
+    print(f"Dataset: {DATASET_DIR}")
+    print(f"Results: {RESULT_DIR}")
+    print(f"Real Metrics: SSIM, LPIPS, PSNR")
+    print(f"Performance Metrics: Memory, GPU, Inference Time")
     
     import uvicorn
     uvicorn.run("viton_api:app", host="0.0.0.0", port=8002, reload=False)
