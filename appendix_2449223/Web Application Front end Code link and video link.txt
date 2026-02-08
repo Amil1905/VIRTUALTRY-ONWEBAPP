@@ -1,2 +1,3 @@
 https://github.com/Amil1905/VIRTUALTRY-ONWEBAPP/blob/main/src/components/TestComparison.jsx - Front-end of web application
-https://drive.google.com/file/d/1_8QP9qR1BlAoTiplN8Xzki0s6IMRJVlS/view?usp=drive_link - video of web application
+
+https://youtu.be/nkdvynezQco- video of web application
