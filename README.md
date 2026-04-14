@@ -120,17 +120,13 @@ Screenshots from the live app:
 └── README.md
 ```
 
-> **Note:** Model checkpoints and backend inference code were hosted on Google Colab Pro+ due to GPU requirements (A100/T4). Backend code and model environments are linked below.
+> **Note:** Model checkpoints were removed after project completion due to
+> cloud hosting costs. The full frontend code, backend architecture, LoRA
+> fine-tuning scripts, and evaluation pipeline are available in this repo.
+> A live demo recording is available on YouTube (link above).
 
 ---
 
-## 🔗 Model Environments (Google Drive)
-
-- [IDM-VTON environment](https://drive.google.com/drive/folders/1bj7fVJ5HCEm7tCgWjLsNZHo27qUC68Yk)
-- [PromptDresser environment](https://drive.google.com/drive/folders/1h_b97qgVyTyZH4sL8gB2xrA-kdDaazX)
-- [VITON-HD environment](https://drive.google.com/drive/folders/1bX1sCzftzcyNOnyF0lRDNDL43Xb5p7I0)
-
----
 
 ## 🧪 Evaluation Setup
 
